@@ -5,12 +5,13 @@ import Form from 'react-bootstrap/Form';
 import { useFirebase } from '../context/Firebase';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-  const navigate = useNavigate();
+const Register = () => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [UserName, setUserName] = useState('');
   const firebase = useFirebase();
-
+  // console.log(firebase);
 
 
   useEffect(() => {
@@ -24,21 +25,25 @@ const Login = () => {
 
 
 
-
-
   const handlesubmit = async (e) => {
     e.preventDefault();
-    console.log("logging in a user ...");
-    const result = await firebase.loginUser(Email, Password);
-    console.log("logged in a user ...", result);
+    console.log("Signinging up a user ...");
+    const result = await firebase.registerUser(Email, Password, UserName);
+    console.log("Signed up a user ...", result);
+    await firebase.updateProfile(UserName);
   }
+
 
   return (
     <div className='container mt-5'>
       <Form onSubmit={handlesubmit}>
+
+        <Form.Group className="mb-3" controlId="formBasicUserName">
+          <Form.Label>User Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter User Name" onChange={(e) => { setUserName(e.target.value) }} value={UserName} />
+        </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicEmail">
-
-
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" onChange={(e) => { setEmail(e.target.value) }} value={Email} />
           <Form.Text className="text-muted">
@@ -52,13 +57,11 @@ const Login = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Log In
+          Create Account
         </Button>
       </Form>
-      <h3 className='mt-5 mb-5'>OR</h3>
-      <Button variant="danger" className='p-1' onClick={firebase.signInWithGoogle}>Sign in with Google</Button>
     </div>
   )
 }
 
-export default Login
+export default Register

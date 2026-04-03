@@ -1,6 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { useFirebase } from '../context/Firebase';
 
 const Home = () => {
+  const firebase = useFirebase();
+
   return (
     <div>
       Home
@@ -8,4 +12,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Home;

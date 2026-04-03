@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getMessaging } from "firebase/messaging";
 
 import {
   getAuth,
@@ -33,6 +34,7 @@ const firebaseAuth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 const firestore = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
+export const messaging = getMessaging(firebaseApp);
 
 
 

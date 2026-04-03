@@ -1,8 +1,10 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { messaging } from './context/Firebase';
+import { getToken } from 'firebase/messaging';
 //pages
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -16,6 +18,27 @@ import Navbarr from './components/Navbarr';
 
 
 const App = () => {
+
+  const [isTokenFound, setTokenFound] = useState(false);
+
+  const requestpermission = async () => {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      console.log("Notification permission granted");
+      try {
+        const token = await getToken(messaging, { vapidKey: "BEl_ZgBv79TD3rJaoOdq2MCDZ875wlvsnOgY7XjldJ8sbbrNFh9RKNdO6grA5PjH-ZTCFzaCDum501Kpvcyjheo" });
+        console.log("Token retrieved: ", token);
+      } catch (e) {
+        console.error("An error occurred while retrieving token: ", e);
+      }
+    }
+  }
+
+  useEffect(() => {
+    requestpermission();
+  }, []);
+
+
   return (
     <div>
       <Navbarr />

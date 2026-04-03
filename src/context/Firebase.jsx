@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 import {
@@ -47,7 +47,7 @@ export const FirebaseProvider = (props) => {
   }, [])
 
 
-  const isLoggedIn = User ? true : false;
+
 
   const registerUser = async (email, password, userName) => {
     return createUserWithEmailAndPassword(firebaseAuth, email, password);
@@ -88,10 +88,64 @@ export const FirebaseProvider = (props) => {
     });
   }
 
+  const ListAllBooks = () => {
+    return getDocs(collection(firestore, "books"));
+  };
+
+  const getBookByID = async (id) => {
+    const docref = doc(firestore, "books", id);
+    const result = await getDoc(docref);
+    return result;
+  }
+
+  const placeOrder = async (bookId, qty) => {
+    const collectionRef = collection(firestore, "books", bookId, "orders");
+    const result = await addDoc(collectionRef, {
+      qty,
+      bookId,
+      userId: User.uid,
+      userEmail: User.email,
+      userName: User.displayName,
+      photoURL: User.photoURL
+    });
+
+    return result;
+  }
+
+
+  const fetchMyBooks = async (userId) => {
+    const collectionRef = collection(firestore, 'books');
+    const q = query(collectionRef, where("userID", "==", userId));
+    const result = await getDocs(q);
+    return result;
+  }
+
+  const getOrders = async (bookId) => {
+    const collectionRef = collection(firestore, 'books', bookId, 'orders');
+    const result = await getDocs(collectionRef);
+    return result;
+  }
+
+  const isLoggedIn = User ? true : false;
+
+
   return (
     <FirebaseContext.Provider
-      value={{ registerUser, loginUser, signInWithGoogle, isLoggedIn, logoutUser, handleCreateNewListing, updateProfile }}
-    >
+      value={{
+        registerUser,
+        loginUser,
+        signInWithGoogle,
+        isLoggedIn,
+        logoutUser,
+        handleCreateNewListing,
+        updateProfile,
+        ListAllBooks,
+        getBookByID,
+        placeOrder,
+        fetchMyBooks,
+        User,
+        getOrders
+      }}>
       {props.children}
     </FirebaseContext.Provider>
   );

@@ -11,7 +11,7 @@ const List = () => {
     const [Name, setName] = useState('');
     const [ISBN, setIsbn] = useState('');
     const [Price, setPrice] = useState('');
-    // const [cover, setCover] = useState('');
+    const [cover, setCover] = useState(null);
     const firebase = useFirebase();
 
 

@@ -8,6 +8,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import List from './pages/List';
+import Detail from './pages/Detail';
+import Orders from './pages/Orders';
+import ViewOrderDetails from './pages/ViewOrderDetails';
 //components
 import Navbarr from './components/Navbarr';
 
@@ -21,6 +24,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/book/list" element={<List />} />
+        <Route path="/book/view/:id" element={<Detail />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/book/orders/:id" element={<ViewOrderDetails />} />
       </Routes>
     </div>
   )

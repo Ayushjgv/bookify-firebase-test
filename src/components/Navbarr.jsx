@@ -18,6 +18,7 @@ const Navbarr = () => {
           <Nav.Link onClick={() => navigate("/login")}>Login</Nav.Link>
           <Nav.Link onClick={() => navigate("/register")}>Register</Nav.Link>
           <Nav.Link onClick={() => navigate("/book/list")}>List Items</Nav.Link>
+          <Nav.Link onClick={() => navigate("/orders")}>Orders</Nav.Link>
         </Nav>
       </Container>
       <Button variant="danger" onClick={firebase.isLoggedIn ? firebase.logoutUser : () => navigate("/login")}>{firebase.isLoggedIn ? 'Logout' : 'Login'}</Button>
